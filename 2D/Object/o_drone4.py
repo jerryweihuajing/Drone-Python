@@ -56,18 +56,17 @@ class drone4(drone):
         #yaw direction
         self.attitude=np.array([0,0,yaw])
         
-    def Plot(self,ax):
+    def Plot(self,ax,arrow=False):
         
         yaw=self.attitude[2]
         
         #relative azimuth of rotors: 45° 135° -135° -45°
-        relative_azimuth_rotors=[yaw+np.pi*(1+2*k)/8 for k in range(4)]
-        
-        print(relative_azimuth_rotors)
-        #relative positions of rotors
-        relative_position_rotors=[self.size*np.array([np.sin(this_azimuth),np.cos(this_azimuth),0])\
-                                  for this_azimuth in relative_azimuth_rotors]
+        relative_azimuth_rotors=[yaw+np.pi*(1+2*k)/4 for k in range(4)]
 
+        #relative positions of rotors
+        relative_position_rotors=[np.sqrt(2)/2*self.size*np.array([np.sin(this_azimuth),np.cos(this_azimuth),0])\
+                                  for this_azimuth in relative_azimuth_rotors]
+              
         #absolute positions
         position_rotors=[np.array(self.position_NED)+np.array(this_relative_position)\
                          for this_relative_position in relative_position_rotors]
@@ -86,7 +85,7 @@ class drone4(drone):
             head_index=k
             tail_index=map_index[k]
             
-            Pl.LinePlot(position_rotors[head_index],position_rotors[tail_index],'k',ax)    
+            Pl.LinePlot(position_rotors[head_index],position_rotors[tail_index],'r',ax)    
             
         '''rotors: need improvement'''    
         #XY coordinates of rotors
@@ -104,22 +103,24 @@ class drone4(drone):
         #plot track
         ax.plot(x_coordinates_track,y_coordinates_track,'b-')
         
-        '''arrow'''
-        #arrow head and tail
-        position_arrow_head=np.array(self.position_NED)-self.size*np.array([np.sin(yaw),np.cos(yaw),0])
-        position_arrow_tail=np.array(self.position_NED)
-        
-        Pl.LinePlot(position_arrow_head,position_arrow_tail,'r',ax)  
-        
-        '''arrow_wings'''
-        #left wing end position
-        position_arrow_wing_left=np.array(position_arrow_head)\
-                                 +0.2*self.size*np.array([np.sin(yaw-np.pi/4),np.cos(yaw-np.pi/4),0])
-        
-        #right wing end position
-        position_arrow_wing_right=np.array(position_arrow_head)\
-                                 +0.2*self.size*np.array([np.sin(yaw+np.pi/4),np.cos(yaw+np.pi/4),0])
-         
-        #plot arrow wings
-        Pl.LinePlot(position_arrow_head,position_arrow_wing_left,'r',ax)  
-        Pl.LinePlot(position_arrow_head,position_arrow_wing_right,'r',ax)  
+        if arrow:
+                
+            '''arrow'''
+            #arrow head and tail
+            position_arrow_head=np.array(self.position_NED)-self.size*np.array([np.sin(yaw),np.cos(yaw),0])
+            position_arrow_tail=np.array(self.position_NED)
+            
+            Pl.LinePlot(position_arrow_head,position_arrow_tail,'r',ax)  
+            
+            '''arrow_wings'''
+            #left wing end position
+            position_arrow_wing_left=np.array(position_arrow_head)\
+                                     +0.2*self.size*np.array([np.sin(yaw-np.pi/4),np.cos(yaw-np.pi/4),0])
+            
+            #right wing end position
+            position_arrow_wing_right=np.array(position_arrow_head)\
+                                     +0.2*self.size*np.array([np.sin(yaw+np.pi/4),np.cos(yaw+np.pi/4),0])
+             
+            #plot arrow wings
+            Pl.LinePlot(position_arrow_head,position_arrow_wing_left,'r',ax)  
+            Pl.LinePlot(position_arrow_head,position_arrow_wing_right,'r',ax)  

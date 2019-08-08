@@ -30,7 +30,7 @@ def PointsAboveCircle(center,radius,num=1000,rotation='left'):
     center=np.array(center)
     radius=np.array(radius)
     
-    '''lazy method: use points nearby method instead'''
+    '''lazy method: use points nearby or directional list method instead'''
     #rotation direction and angle 
     if rotation=='left':
     
