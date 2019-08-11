@@ -25,8 +25,10 @@ from Object.o_drone4 import drone4
 from Module import Error as Err
 from Module import Circle as Cir
 from Module import Algebra as Al
+from Module import WayPoints as WP
 from Module import Geometry as Geom
-from Module import Animation as Ani
+from Module import Simulation as Sim
+
 
 plt.ion()
 fig=plt.figure(figsize=(8,8))
@@ -40,14 +42,16 @@ r=66
 
 Cir.CirclePlot([0,0],r,ax)
 
-'''need revision'''
 #scatter abovr circle
-A_circle_scatter=Cir.PointsAboveCircle([+r,0],r,num=100,rotation='left')
-B_circle_scatter=Cir.PointsAboveCircle([-r,0],r,num=100,rotation='right')
+A_circle_scatter=Cir.PointsAboveCircle([-r,+r],r,+np.pi/2,166,'clockwise')
+B_circle_scatter=Cir.PointsAboveCircle([+r,-r],r,-np.pi/2,166,'counter-clockwise')
 
-#combine
-way_points=B_circle_scatter+A_circle_scatter
- 
+#combine them
+way_points=WP.CombineWayPoints([A_circle_scatter,B_circle_scatter])
+
+#3D format
+way_points_3D=Geom.Coordinates2Dto3D(way_points)
+    
 AMENG=drone4()
 
 AMENG.size=15
@@ -55,11 +59,11 @@ AMENG.track=[]
 
 #init yaw and start point
 start_yaw=-np.pi/2
-start_point=[0,0,0]
+start_point=[0,r,0]
 
 AMENG.attitude=[0,0,start_yaw]
 AMENG.Update(start_point,start_yaw)
 
 #flight simulation
-Ani.FlightSimulation(AMENG,way_points,ax)
+Sim.VariantVelocitySimulation(AMENG,way_points_3D,ax)
     

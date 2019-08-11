@@ -24,17 +24,27 @@ from Module import Algebra as Al
 Generate flight error on way point
 
 Args:
-    planned_way_points: ideal way point
-    error_level: level of error (0-1)
+    start_point: coordinate of start point
+    destination_point:  coordinate of destination point
+    error_level: level of error
     
 Returns:
     Way point with error
 """
-def WayPointError(planned_way_point,error_level):
+def WayPointError(start_point,destination_point,error_level):
 
-    #create flight error
-    error_way_point=[planned_way_point[0]*(1+error_level*np.random.random()*Al.Sign()),
-                     planned_way_point[1]*(1+error_level*np.random.random()*Al.Sign()),
-                     0]
+    #transform into np.array
+    start_point=np.array(start_point)
+    destination_point=np.array(destination_point)
     
-    return error_way_point
+    #coordinate difference
+    coordinate_diff=[]
+    
+    for k in range(len(start_point)):
+        
+        #error factor
+        error_factor=error_level*np.random.random()*Al.Sign()
+
+        coordinate_diff.append((destination_point-start_point)[k]*error_factor)
+           
+    return destination_point+np.array(coordinate_diff)

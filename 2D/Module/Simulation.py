@@ -6,7 +6,7 @@ Created on Thu Aug  8 17:34:21 2019
 @company: Ameng Science and Technology Education Co., Ltd
 @e-mail: jerryweihuajing@126.com
 
-@title：Module-Animation
+@title：Module-Simulation
 """
 
 import numpy as np
@@ -24,6 +24,9 @@ from Module import Geometry as Geom
 
 #title font
 title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=20)
+
+#annotation font
+annotation_font=fm.FontProperties(fname="C:\Windows\Fonts\GIL_____.ttf",size=16)
 
 #------------------------------------------------------------------------------
 """
@@ -49,21 +52,21 @@ def FlightField(way_points):
 
 #------------------------------------------------------------------------------
 """
-Drone flight simulation
+Drone flight simulation controlling waypoints position
 
 Args:
     which_drone: drone object which performs
     way_points: way points list
     ax: ax on which the circle is plotted
-    error_level: level of error (0-1)
+    error_level: level of error
     time_step: time step of animation 
     
 Returns:
     None
 """  
-def FlightSimulation(which_drone,way_points,ax,error_level=0.02,time_step=0.01):
+def VariantVelocitySimulation(which_drone,way_points,ax,error_level=0.5,time_step=0.01):
     
-    for this_way_point in way_points:
+    for this_way_point in way_points[1:]:
         
         #clean ax
         ax.cla()
@@ -72,7 +75,7 @@ def FlightSimulation(which_drone,way_points,ax,error_level=0.02,time_step=0.01):
         start_point=which_drone.position_NED
         
         #create flight error
-        destination_point=Err.WayPointError(this_way_point,error_level)
+        destination_point=Err.WayPointError(start_point,this_way_point,error_level)
         
         #yaw in start point
         start_yaw=Geom.Azimuth(start_point,destination_point)
@@ -82,6 +85,8 @@ def FlightSimulation(which_drone,way_points,ax,error_level=0.02,time_step=0.01):
         which_drone.Plot(ax)
     
         plt.axis(FlightField(way_points)*1.1)
-        plt.title('Drone Flight Simulation 2D',fontproperties=title_font)
+        
+        plt.title('Drone Flight Simulation 2D: Variant Velocity',fontproperties=title_font)
+        
         plt.pause(time_step)
-
+        

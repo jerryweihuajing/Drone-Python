@@ -9,6 +9,15 @@ Created on Thu Aug  8 14:38:23 2019
 @title：execution script
 """
 
+import sys,os
+
+if os.getcwd() not in sys.path:
+    
+    sys.path.append(os.getcwd())
+    
+from Module import Circle as Cir
+from Module import Geometry as Geom
+
 import asyncio
 
 from mavsdk import start_mavlink
@@ -24,15 +33,26 @@ from mavsdk import (
 start_mavlink()
 drone = mavsdk_connect(host="127.0.0.1")
 
-#absolute translantion
-async def run_offb_ctrl_velocity_ned():
-    """ Does Offboard control using velocity NED co-ordinates. """
-
+#fly to destination straightly
+async def PositionNEDController():
+    """ Does Offboard control using position NED co-ordinates. """
+    
+    height=5
+    radius=5
+    start_point=[0,0,0]
+    start_yaw=0
+    
+    center=[0,-radius]
+    way_points=Cir.PointsAboveCircle(center,radius,num=10)
+    
     print("-- Arming")
     await drone.action.arm()
 
     print("-- Setting initial setpoint")
-    await drone.offboard.set_velocity_ned(VelocityNEDYaw(0.0, 0.0, 0.0, 0.0))
+    await drone.offboard.set_position_ned(PositionNEDYaw(start_point[0],
+                                                         start_point[1],
+                                                         0.0,
+                                                         start_yaw))
 
     print("-- Starting offboard")
     try:
@@ -43,33 +63,31 @@ async def run_offb_ctrl_velocity_ned():
         await drone.action.disarm()
         return
 
-    print("-- Go up 2 m/s")
-    await drone.offboard.set_velocity_ned(VelocityNEDYaw(0.0, 0.0, -2.0, 0.0))
-    await asyncio.sleep(4)
+    print("-- Takeoff: Ascend to altitude of height (m)")
+    await drone.offboard.set_position_ned(PositionNEDYaw(start_point[0],
+                                                         start_point[1],
+                                                         -height,
+                                                         start_yaw))
+    await asyncio.sleep(10)
 
-    print("-- Go North 2 m/s, turn to face East")
-    await drone.offboard.set_velocity_ned(VelocityNEDYaw(2.0, 0.0, 0.0, 90.0))
-    await asyncio.sleep(4)
-
-    print("-- Go South 2 m/s, turn to face West")
-    await drone.offboard.set_velocity_ned(VelocityNEDYaw(-2.0, 0.0, 0.0, 270.0))
-    await asyncio.sleep(4)
-
-    print("-- Go West 2 m/s, turn to face East")
-    await drone.offboard.set_velocity_ned(VelocityNEDYaw(0.0, -2.0, 0.0, 90.0))
-    await asyncio.sleep(4)
-
-    print("-- Go East 2 m/s")
-    await drone.offboard.set_velocity_ned(VelocityNEDYaw(0.0, 2.0, 0.0, 90.0))
-    await asyncio.sleep(4)
-
-    print("-- Turn to face South")
-    await drone.offboard.set_velocity_ned(VelocityNEDYaw(0.0, 0.0, 0.0, 180.0))
-    await asyncio.sleep(2)
-
-    print("-- Go down 1 m/s, turn to face North")
-    await drone.offboard.set_velocity_ned(VelocityNEDYaw(0.0, 0.0, 1.0, 0.0))
-    await asyncio.sleep(4)
+    print("-- Iteration: Cruise within local coordinate system")
+    for k in range(len(way_points)-1):
+        
+        
+        #start point this iteration
+        start_point=way_points[k]
+        
+        #create flight error
+        destination_point=way_points[k+1]
+        
+        #yaw in start point
+        start_yaw=Geom.Azimuth(start_point,destination_point)
+        
+        await drone.offboard.set_position_ned(PositionNEDYaw(destination_point[0],
+                                                             destination_point[1],
+                                                             -height,
+                                                             start_yaw))
+        await asyncio.sleep(5)
 
     print("-- Stopping offboard")
     try:
@@ -78,4 +96,4 @@ async def run_offb_ctrl_velocity_ned():
         print(f"Stopping offboard mode failed with error code: {error._result.result}")
         
 loop = asyncio.get_event_loop()
-loop.run_until_complete(run_offb_ctrl_velocity_ned())
+loop.run_until_complete(PositionNEDController())

@@ -18,13 +18,14 @@ calculated points above a circle
 Args:
     center: center position of circle
     radius: radius of circle
+    start_azimuth: the azimuth where the circle start
     num: amounts of micro units which consist of circle
     rotation: circle point rotation direction
     
 Returns:
     Position list of points which are above circle
 """
-def PointsAboveCircle(center,radius,num=1000,rotation='left'):
+def PointsAboveCircle(center,radius,start_azimuth=0,num=1000,rotation='clockwise'):
     
     #to float
     center=np.array(center)
@@ -32,13 +33,7 @@ def PointsAboveCircle(center,radius,num=1000,rotation='left'):
     
     '''lazy method: use points nearby or directional list method instead'''
     #rotation direction and angle 
-    if rotation=='left':
-    
-        alpha=np.linspace(-np.pi,np.pi,num)
-    
-    if rotation=='right':
-        
-        alpha=np.linspace(2*np.pi,0.0,num)
+    alpha=np.linspace(start_azimuth,start_azimuth+2*np.pi,num)
     
     #coordinates
     coordinates=[]
@@ -47,10 +42,14 @@ def PointsAboveCircle(center,radius,num=1000,rotation='left'):
     for this_alpha in alpha:
         
         #polar coordinates
-        this_pos=center+np.array([radius*np.cos(this_alpha),radius*np.sin(this_alpha)])
+        this_pos=center+np.array([radius*np.sin(this_alpha),radius*np.cos(this_alpha)])
         
         #collect
         coordinates.append(this_pos)
+        
+    if rotation=='counter-clockwise':
+        
+        coordinates.reverse()
         
     return coordinates
 
