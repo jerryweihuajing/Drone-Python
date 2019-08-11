@@ -43,8 +43,8 @@ r=66
 Cir.CirclePlot([0,0],r,ax)
 
 #scatter abovr circle
-A_circle_scatter=Cir.PointsAboveCircle([-r,+r],r,+np.pi/2,166,'clockwise')
-B_circle_scatter=Cir.PointsAboveCircle([+r,-r],r,-np.pi/2,166,'counter-clockwise')
+A_circle_scatter=Cir.PointsAboveCircle([-r,0],r,+np.pi/2,166,'clockwise')
+B_circle_scatter=Cir.PointsAboveCircle([+r,0],r,-np.pi/2,166,'counter-clockwise')
 
 #combine them
 way_points=WP.CombineWayPoints([A_circle_scatter,B_circle_scatter])
@@ -59,7 +59,7 @@ AMENG.track=[]
 
 #init yaw and start point
 start_yaw=-np.pi/2
-start_point=[0,r,0]
+start_point=[0,0,0]
 
 AMENG.attitude=[0,0,start_yaw]
 AMENG.Update(start_point,start_yaw)
