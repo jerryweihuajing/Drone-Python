@@ -86,7 +86,11 @@ def VariantVelocityAnimation(which_drone,way_points_3D,error_level=0.5,time_step
                                 repeat = False,    
                                 blit=True)
     
-    #save the video
+    #save the gif
+    if gif_name is None:
+        
+        return ani
+    
     if gif_name is not None:
         
         ani.save(gif_name,writer='imagemagick')

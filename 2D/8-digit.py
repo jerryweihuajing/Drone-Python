@@ -60,4 +60,4 @@ AMENG.Update(start_point,start_yaw)
 #flight simulation
 #Sim.VariantVelocitySimulation(AMENG,way_points_3D)
 
-Ani.VariantVelocityAnimation(AMENG,way_points_3D)
+ani=Ani.VariantVelocityAnimation(AMENG,way_points_3D)
