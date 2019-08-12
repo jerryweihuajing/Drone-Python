@@ -9,6 +9,7 @@ Created on Thu Aug  8 17:34:21 2019
 @title：Module-Simulation
 """
 
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
@@ -57,16 +58,21 @@ Drone flight simulation controlling waypoints position
 Args:
     which_drone: drone object which performs
     way_points: way points list
-    ax: ax on which the circle is plotted
     error_level: level of error
     time_step: time step of animation 
     
 Returns:
     None
 """  
-def VariantVelocitySimulation(which_drone,way_points,ax,error_level=0.5,time_step=0.01):
-    
-    for this_way_point in way_points[1:]:
+def VariantVelocitySimulation(which_drone,way_points,error_level=0.5,time_step=0.01):
+      
+    plt.ion()
+    fig=plt.figure(figsize=(8,8))
+    ax=fig.add_subplot(111)
+
+    for k in range(1,len(way_points)):
+        
+        this_way_point=way_points[k]
         
         #clean ax
         ax.cla()
@@ -85,8 +91,6 @@ def VariantVelocitySimulation(which_drone,way_points,ax,error_level=0.5,time_ste
         which_drone.Plot(ax)
     
         plt.axis(FlightField(way_points)*1.1)
-        
         plt.title('Drone Flight Simulation 2D: Variant Velocity',fontproperties=title_font)
-        
         plt.pause(time_step)
         
