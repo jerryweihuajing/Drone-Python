@@ -9,19 +9,15 @@ Created on Mon Aug 12 23:00:20 2019
 @title：Module-Animation
 """
 
+import sys
+
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import matplotlib.animation as animation
 
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-    
-from Module import Error as Err
-from Module import Geometry as Geom
-from Module import Simulation as Sim
+import Error as Err
+import Geometry as Geom
+import Simulation as Sim
 
 #title font
 title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=20)
@@ -35,24 +31,26 @@ Args:
     way_points_3D: way points list
     error_level: level of error
     time_step: time step of animation 
-    gif_name: output video name
+    file_name: output video name
     
 Returns:
     None
 """  
-def VariantVelocityAnimation(which_drone,way_points_3D,error_level=0.5,time_step=0.01,gif_name=None):
+def VariantVelocityAnimation(which_drone,way_points_3D,error_level=0.5,time_step=0.01,file_name=None):
         
     plt.ion()
     fig=plt.figure(figsize=(8,8))
     ax=fig.add_subplot(111)
     
     # Add new element to list with everything that changes between frames
-    frame, = ax.plot([],[],animated=True)
+    frame, = ax.plot([],[])
     
     #each frame of gif
     imgs=[]
     
     for k in range(1,len(way_points_3D)):
+        
+        
         
         this_way_point=way_points_3D[k]
         
@@ -76,7 +74,7 @@ def VariantVelocityAnimation(which_drone,way_points_3D,error_level=0.5,time_step
         plt.title('Drone Flight Simulation 2D: Variant Velocity',fontproperties=title_font)
         plt.pause(0.01)
         
-        imgs.append([frame])
+        imgs.append((frame,))
     
     #defien a animation object
     ani=animation.ArtistAnimation(fig, 
@@ -87,10 +85,13 @@ def VariantVelocityAnimation(which_drone,way_points_3D,error_level=0.5,time_step
                                 blit=True)
     
     #save the gif
-    if gif_name is None:
+    if file_name is None:
         
         return ani
     
-    if gif_name is not None:
+    if file_name is not None:
         
-        ani.save(gif_name,writer='imagemagick')
+        sys.path.append(r'C:\ffmpeg\bin')
+        
+        writer = animation.FFMpegWriter()
+        ani.save(file_name,writer = writer)

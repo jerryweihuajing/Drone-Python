@@ -13,15 +13,9 @@ import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
 
-import sys,os
-
-if os.getcwd() not in sys.path:
+from o_drone import drone
     
-    sys.path.append(os.getcwd())
-    
-from Object.o_drone import drone
-    
-from Module import Plot as Pl
+import Plot as Pl
 
 #==============================================================================  
 #Unmanned Aerial Vehicle (UAV) with 4 rotors

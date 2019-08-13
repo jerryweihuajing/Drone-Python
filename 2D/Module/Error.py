@@ -13,11 +13,7 @@ import numpy as np
 
 import sys,os
 
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-
-from Module import Algebra as Al
+import Algebra as Al
 
 #------------------------------------------------------------------------------
 """

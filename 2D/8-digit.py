@@ -19,24 +19,26 @@ import sys,os
 if os.getcwd() not in sys.path:
     
     sys.path.append(os.getcwd())
+    sys.path.append(os.getcwd()+'\\Module')
+    sys.path.append(os.getcwd()+'\\Object')
     
-from Object.o_drone import drone
-from Object.o_drone4 import drone4
+from o_drone import drone
+from o_drone4 import drone4
 
-from Module import Error as Err
-from Module import Circle as Cir
-from Module import Algebra as Al
-from Module import WayPoints as WP
-from Module import Geometry as Geom
-from Module import Simulation as Sim
-from Module import Animation as Ani
+import Error as Err
+import Circle as Cir
+import Algebra as Al
+import WayPoints as WP
+import Geometry as Geom
+import Simulation as Sim
+import Animation as Ani
 
 r=66
 num_step=66
 
 #scatter abovr circle
-A_circle_scatter=Cir.PointsAboveCircle([-r,-r],r,+np.pi/2,num_step,'clockwise')
-B_circle_scatter=Cir.PointsAboveCircle([+r,+r],r,-np.pi/2,num_step,'counter-clockwise')
+A_circle_scatter=Cir.PointsAboveCircle([-r,+r],r,+np.pi/2,num_step,'clockwise')
+B_circle_scatter=Cir.PointsAboveCircle([+r,-r],r,-np.pi/2,num_step,'counter-clockwise')
 
 #combine them
 way_points=WP.CombineWayPoints([A_circle_scatter,B_circle_scatter])

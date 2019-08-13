@@ -14,14 +14,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
-import sys,os
-
-if os.getcwd() not in sys.path:
-    
-    sys.path.append(os.getcwd())
-    
-from Module import Error as Err
-from Module import Geometry as Geom
+import Error as Err
+import Geometry as Geom
 
 #title font
 title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=20)
