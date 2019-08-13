@@ -14,6 +14,8 @@ import sys,os
 if os.getcwd() not in sys.path:
     
     sys.path.append(os.getcwd())
+    sys.path.append(os.getcwd()+'\\Module')
+    sys.path.append(os.getcwd()+'\\Object')
     
 from Module import Circle as Cir
 from Module import Geometry as Geom
@@ -33,6 +35,48 @@ from mavsdk import (
 start_mavlink()
 drone = mavsdk_connect(host="127.0.0.1")
 
+
+def Arm(which_drone):
+    
+    print("-- Arming")
+    await drone.action.arm()
+  
+def Init(which_drone):
+    
+    print("-- Setting initial setpoint")
+    await which_drone.offboard.set_position_ned(PositionNEDYaw(start_point[0],
+                                                         start_point[1],
+                                                         0.0,
+                                                         start_yaw))
+
+def Start(which_drone):
+    
+    print("-- Starting offboard")
+    try:
+        await drone.offboard.start()
+    except OffboardError as error:
+        print(f"Starting offboard mode failed with error code: {error._result.result}")
+        print("-- Disarming")
+        await drone.action.disarm()
+        return
+
+def Takeoff(which_drone,height=5):
+    
+    print("-- Takeoff: Ascend to altitude of height (m)")
+    await which_drone.offboard.set_position_ned(PositionNEDYaw(start_point[0],
+                                                         start_point[1],
+                                                         -height,
+                                                         start_yaw))
+    
+def Stop(which_drone):
+    
+    print("-- Stopping offboard")
+    try:
+        await drone.offboard.stop()
+    except OffboardError as error:
+        print(f"Stopping offboard mode failed with error code: {error._result.result}")
+        
+    
 #fly to destination straightly
 async def PositionNEDController():
     """ Does Offboard control using position NED co-ordinates. """
@@ -45,30 +89,15 @@ async def PositionNEDController():
     center=[0,-radius]
     way_points=Cir.PointsAboveCircle(center,radius,num=10)
     
-    print("-- Arming")
-    await drone.action.arm()
+    ''''''
+    Arm(drone)
+    Init(drone)
+    
+    Start(drone)
+    Takeoff(drone)
+    
+    Stop(drone)
 
-    print("-- Setting initial setpoint")
-    await drone.offboard.set_position_ned(PositionNEDYaw(start_point[0],
-                                                         start_point[1],
-                                                         0.0,
-                                                         start_yaw))
-
-    print("-- Starting offboard")
-    try:
-        await drone.offboard.start()
-    except OffboardError as error:
-        print(f"Starting offboard mode failed with error code: {error._result.result}")
-        print("-- Disarming")
-        await drone.action.disarm()
-        return
-
-    print("-- Takeoff: Ascend to altitude of height (m)")
-    await drone.offboard.set_position_ned(PositionNEDYaw(start_point[0],
-                                                         start_point[1],
-                                                         -height,
-                                                         start_yaw))
-    await asyncio.sleep(10)
 
     print("-- Iteration: Cruise within local coordinate system")
     for k in range(len(way_points)-1):
@@ -89,11 +118,5 @@ async def PositionNEDController():
                                                              start_yaw))
         await asyncio.sleep(5)
 
-    print("-- Stopping offboard")
-    try:
-        await drone.offboard.stop()
-    except OffboardError as error:
-        print(f"Stopping offboard mode failed with error code: {error._result.result}")
-        
 loop = asyncio.get_event_loop()
 loop.run_until_complete(PositionNEDController())

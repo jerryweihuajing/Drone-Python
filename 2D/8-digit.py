@@ -13,6 +13,8 @@ import copy as cp
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import matplotlib
+matplotlib.use('Qt5Agg')
 
 import sys,os
 
