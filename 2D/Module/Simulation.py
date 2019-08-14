@@ -58,15 +58,15 @@ Args:
 Returns:
     None
 """  
-def VariantVelocitySimulation(which_drone,way_points,error_level=0.5,time_step=0.01):
+def VariantVelocitySimulation(which_drone,waypoints,error_level=0.5,time_step=0.01):
       
     plt.ion()
     fig=plt.figure(figsize=(8,8))
     ax=fig.add_subplot(111)
 
-    for k in range(1,len(way_points)):
+    for k in range(1,len(waypoints)):
         
-        this_way_point=way_points[k]
+        this_waypoint=waypoints[k]
         
         #clean ax
         ax.cla()
@@ -75,7 +75,7 @@ def VariantVelocitySimulation(which_drone,way_points,error_level=0.5,time_step=0
         start_point=which_drone.position_NED
         
         #create flight error
-        destination_point=Err.WayPointError(start_point,this_way_point,error_level)
+        destination_point=Err.WayPointError(start_point,this_waypoint,error_level)
         
         #yaw in start point
         start_yaw=Geom.Azimuth(start_point,destination_point)
@@ -84,7 +84,7 @@ def VariantVelocitySimulation(which_drone,way_points,error_level=0.5,time_step=0
         which_drone.Update(destination_point,start_yaw)
         which_drone.Plot(ax)
     
-        plt.axis(FlightField(way_points)*1.1)
+        plt.axis(FlightField(waypoints)*1.1)
         plt.title('Drone Flight Simulation 2D: Variant Velocity',fontproperties=title_font)
         plt.pause(time_step)
         

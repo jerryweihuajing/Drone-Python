@@ -65,6 +65,9 @@ class drone4(drone):
         position_rotors=[np.array(self.position_NED)+np.array(this_relative_position)\
                          for this_relative_position in relative_position_rotors]
 
+        '''quadrangle method'''
+        
+        
         '''main frame'''
         #main fram legs index
         map_index={}
