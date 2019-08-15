@@ -26,8 +26,8 @@ Returns:
 def Azimuth(start_point,destination_point):
     
     #xy coordinate component
-    x_component=start_point[0]-destination_point[0]
-    y_component=start_point[1]-destination_point[1]
+    x_component=destination_point[0]-start_point[0]
+    y_component=destination_point[1]-start_point[1]
 
     #qudarant 1
     if x_component>0 and y_component>0:
@@ -68,7 +68,16 @@ def Azimuth(start_point,destination_point):
     if x_component<0 and y_component==0:
         
         azimuth=3*np.pi/2
+     
+    '''note: abs yaw value range [-180, 180] deg in NED frame'''
+    if azimuth>np.pi:
         
+        return azimuth-2*np.pi
+    
+    if azimuth<-np.pi:
+        
+        return azimuth+2*np.pi
+    
     return azimuth
 
 #------------------------------------------------------------------------------

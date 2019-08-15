@@ -17,6 +17,9 @@ import matplotlib.font_manager as fm
 import Error as Err
 import Geometry as Geom
 
+from ACTION_LIB import WAYPOINT_FLIGHT
+from ACTION_LIB import ARM
+
 #title font
 title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=20)
 
@@ -64,6 +67,15 @@ def VariantVelocitySimulation(which_drone,waypoints,error_level=0.5,time_step=0.
     fig=plt.figure(figsize=(8,8))
     ax=fig.add_subplot(111)
 
+    #unlock the drone
+    ARM.Arm(which_drone)
+    
+    if not which_drone.is_arm:
+        
+        print('ERROR: the drone is locked!')
+        
+        return
+    
     for k in range(1,len(waypoints)):
         
         this_waypoint=waypoints[k]
@@ -81,8 +93,14 @@ def VariantVelocitySimulation(which_drone,waypoints,error_level=0.5,time_step=0.
         start_yaw=Geom.Azimuth(start_point,destination_point)
         
         #update position and plot
-        which_drone.Update(destination_point,start_yaw)
-        which_drone.Plot(ax)
+#        which_drone.Update(destination_point,start_yaw)
+        
+        #waypoint parameters
+        this_waypoint_params=list(destination_point-start_point)+[start_yaw]
+        
+        #Waypoint flight
+        WAYPOINT_FLIGHT.WaypointFlight(which_drone,this_waypoint_params,1)
+        which_drone.Plot(ax,True,True)
     
         plt.axis(FlightField(waypoints)*1.1)
         plt.title('Drone Flight Simulation 2D: Variant Velocity',fontproperties=title_font)
