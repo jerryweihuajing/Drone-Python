@@ -29,7 +29,9 @@ class drone():
                  track=None,
                  is_arm=None,
                  is_in_air=None,
-                 coordinate_takeoff_point=None):  
+                 coordinate_takeoff_point=None,
+                 coordinate_land_point=None): 
+        
         self.size=size 
         self.position_NED=position_NED
         self.velocity_NED=velocity_NED
@@ -40,3 +42,4 @@ class drone():
         self.is_arm=is_arm
         self.is_in_air=is_in_air
         self.coordinate_takeoff_point=coordinate_takeoff_point
+        self.coordinate_land_point=coordinate_land_point

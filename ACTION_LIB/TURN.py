@@ -31,6 +31,8 @@ Returns:
 """ 
 def Turn(which_drone,angle,behavior_mode,ax=None):
     
+    print('')
+    
     if not which_drone.is_in_air:
         
         print('ERROR: the drone is not in flight!')
@@ -40,15 +42,13 @@ def Turn(which_drone,angle,behavior_mode,ax=None):
     #absolute mode
     if behavior_mode==0:
         
-        print('')
         print("-- Turn to azimuth %.2f degrees absolutely"%angle)
         
         azimuth=cp.deepcopy(angle)
         
     #relative mode
     if behavior_mode==1:
-        
-        print('')
+
         print("-- Turn %.2f degrees relatively"%angle)
         
         azimuth=which_drone.attitude[-1]+cp.deepcopy(angle)

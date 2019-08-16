@@ -39,12 +39,11 @@ def TakeOff(which_drone,start_position=[0,0],start_yaw=0,height=5,ax=None):
     #Init drone
     which_drone.Update([start_position[0],start_position[1],height],start_yaw)
     
-    #record takeoff point position
-    which_drone.coordinate_takeoff_point=cp.deepcopy(which_drone.position_NED)
-    
     print('')
     print("-- Takeoff: Ascend to altitude of height (meter)")
     
+    #record takeoff point position
+    which_drone.coordinate_takeoff_point=cp.deepcopy(which_drone.position_NED)
     which_drone.is_in_air=True
     
     print('-> Takeoff point coordinate is [%.2f, %.2f, %.2f] (meter)'%(which_drone.coordinate_takeoff_point[0],\

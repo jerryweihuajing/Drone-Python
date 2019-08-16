@@ -31,7 +31,8 @@ class drone4(drone):
                  track=None,
                  is_arm=None,
                  is_in_air=None,
-                 coordinate_takeoff_point=None):
+                 coordinate_takeoff_point=None,
+                 coordinate_land_point=None):
         
         drone.__init__(self,
                        size=None,
@@ -43,7 +44,8 @@ class drone4(drone):
                        track=None,
                        is_arm=None,
                        is_in_air=None,
-                       coordinate_takeoff_point=None)
+                       coordinate_takeoff_point=None,
+                       coordinate_land_point=None)
      
     def Update(self,waypoint,yaw):
         

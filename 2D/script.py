@@ -38,6 +38,8 @@ from ACTION_LIB import ARM
 from ACTION_LIB import TURN
 from ACTION_LIB import TAKEOFF
 from ACTION_LIB import WAYPOINT_FLIGHT
+from ACTION_LIB import LAND
+from ACTION_LIB import DISARM
 
 r=66
 num_step=166
@@ -117,6 +119,16 @@ plt.pause(1)
  
 plt.cla()
 TURN.Turn(AMENG,-45,1,ax)
+plt.axis([-100,100,-100,100])
+plt.pause(1)
+
+plt.cla()
+LAND.Land(AMENG,ax=ax)
+plt.axis([-100,100,-100,100])
+plt.pause(1)
+
+plt.cla()
+DISARM.Disarm(AMENG,ax)
 plt.axis([-100,100,-100,100])
 plt.pause(1)
 

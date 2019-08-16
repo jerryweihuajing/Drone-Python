@@ -34,6 +34,8 @@ Returns:
 """ 
 def WaypointFlight(which_drone,waypoint_params,behavior_mode=0,ax=None):
     
+    print('')
+    
     if not which_drone.is_in_air:
         
         print('ERROR: the drone is not in flight!')
@@ -53,7 +55,6 @@ def WaypointFlight(which_drone,waypoint_params,behavior_mode=0,ax=None):
         #destination point
         destination_position_ned=np.array([destination_x,destination_y,destination_z])
         
-        print('')
         print("-- Go to waypoint absolutely within local coordinate NED system")
         print('-> Go to north %.2f (meter)'%waypoint_params[0])
         print('-> Go to east %.2f (meter)'%waypoint_params[1])
@@ -76,7 +77,6 @@ def WaypointFlight(which_drone,waypoint_params,behavior_mode=0,ax=None):
                                            start_position_ned[1]+difference_y,
                                            start_position_ned[2]+difference_z])
         
-        print('')
         print("-- Go to waypoint relatively within local coordinate NED system")
         print('-> Go north %.2f (meter)'%waypoint_params[0])
         print('-> Go east %.2f (meter)'%waypoint_params[1])

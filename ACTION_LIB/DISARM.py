@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Aug 15 14:15:18 2019
+Created on Fri Aug 16 16:42:16 2019
 
 @author: Wei Huajing
 @company: Ameng Science and Technology Education Co., Ltd
 @e-mail: jerryweihuajing@126.com
 
-@title：ACTION_LIB-ARM
+@title：ACTION_LIB-DISARM
 """
 
 #------------------------------------------------------------------------------
@@ -20,19 +20,22 @@ Args:
 Returns:
     None
 """  
-def Arm(which_drone,ax=None):
+def Disarm(which_drone,ax=None):
+    
+    print('')
+    
+    if which_drone.is_in_air:
+        
+        print('ERROR: the drone is still in flight!')
+        
+        return
     
     #unlock
-    which_drone.is_arm=True
+    which_drone.is_arm=False
     
-    #Init drone
-    which_drone.Update([0,0,0],0)
-   
-    print('')
-    print("-- Arming")
+    print("-- Disarming")
    
     #Plot the drone
     if ax is not None:
         
         which_drone.Plot(ax,1,1)
-    
