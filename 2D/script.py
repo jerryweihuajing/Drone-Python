@@ -40,6 +40,7 @@ from ACTION_LIB import TAKEOFF
 from ACTION_LIB import WAYPOINT_FLIGHT
 from ACTION_LIB import LAND
 from ACTION_LIB import DISARM
+from ACTION_LIB import WPFLY_HEADLESS
 
 r=66
 num_step=166
@@ -93,34 +94,40 @@ plt.axis([-100,100,-100,100])
 plt.pause(1)
 
 plt.cla()
-WAYPOINT_FLIGHT.WaypointFlight(AMENG,[50,-50,0,0],0,ax)
-plt.axis([-100,100,-100,100])
-plt.pause(1)
- 
-plt.cla()
-TURN.Turn(AMENG,45,1,ax)
+WPFLY_HEADLESS.WaypointFlightHeadless(AMENG,[1,1,1],ax)
 plt.axis([-100,100,-100,100])
 plt.pause(1)
 
-plt.cla()
-WAYPOINT_FLIGHT.WaypointFlight(AMENG,[-50,-50,0,0],0,ax)
-plt.axis([-100,100,-100,100])
-plt.pause(1)
- 
-plt.cla()
-TURN.Turn(AMENG,45,1,ax)
-plt.axis([-100,100,-100,100])
-plt.pause(1)
-   
-plt.cla()
-WAYPOINT_FLIGHT.WaypointFlight(AMENG,[-50,50,0,0],0,ax)
-plt.axis([-100,100,-100,100])
-plt.pause(1)
- 
-plt.cla()
-TURN.Turn(AMENG,-45,1,ax)
-plt.axis([-100,100,-100,100])
-plt.pause(1)
+
+#plt.cla()
+#WAYPOINT_FLIGHT.WaypointFlight(AMENG,[50,-50,0,0],0,ax)
+#plt.axis([-100,100,-100,100])
+#plt.pause(1)
+# 
+#plt.cla()
+#TURN.Turn(AMENG,45,1,ax)
+#plt.axis([-100,100,-100,100])
+#plt.pause(1)
+#
+#plt.cla()
+#WAYPOINT_FLIGHT.WaypointFlight(AMENG,[-50,-50,0,0],0,ax)
+#plt.axis([-100,100,-100,100])
+#plt.pause(1)
+# 
+#plt.cla()
+#TURN.Turn(AMENG,45,1,ax)
+#plt.axis([-100,100,-100,100])
+#plt.pause(1)
+#   
+#plt.cla()
+#WAYPOINT_FLIGHT.WaypointFlight(AMENG,[-50,50,0,0],0,ax)
+#plt.axis([-100,100,-100,100])
+#plt.pause(1)
+# 
+#plt.cla()
+#TURN.Turn(AMENG,-45,1,ax)
+#plt.axis([-100,100,-100,100])
+#plt.pause(1)
 
 plt.cla()
 LAND.Land(AMENG,ax=ax)
