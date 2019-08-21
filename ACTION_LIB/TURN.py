@@ -22,14 +22,14 @@ Drone turns its head
 
 Args:
     which_drone: drone object which performs
-    angle: degrees which is turn direction information
+    angle_degree: anlge which is turn direction information (unit: degree)
     behavior_mode: absolute and relative flight mode
     ax: axes where drone is plotted
         
 Returns:
     None
 """ 
-def Turn(which_drone,angle,behavior_mode,ax=None):
+def Turn(which_drone,angle_degree,behavior_mode,ax=None):
     
     print('')
     
@@ -42,30 +42,32 @@ def Turn(which_drone,angle,behavior_mode,ax=None):
     #absolute mode
     if behavior_mode==0:
         
-        print("-- Turn to azimuth %.2f degrees absolutely"%angle)
+        print("-- Turn to azimuth %.2f degrees absolutely"%angle_degree)
         
-        azimuth=cp.deepcopy(angle)
+        azimuth_degree=cp.deepcopy(angle_degree)
         
     #relative mode
     if behavior_mode==1:
 
-        print("-- Turn %.2f degrees relatively"%angle)
+        print("-- Turn %.2f degrees relatively"%angle_degree)
         
-        azimuth=which_drone.attitude[-1]+cp.deepcopy(angle)
+        azimuth_degree=which_drone.attitude[-1]+cp.deepcopy(angle_degree)
         
     '''note: abs yaw value range [-180, 180] deg in NED frame'''
-    while azimuth>180:
+    while azimuth_degree>180:
         
-        azimuth-=2*180
+        azimuth_degree-=2*180
     
-    while azimuth<-180:
+    while azimuth_degree<-180:
         
-        azimuth+=2*180
+        azimuth_degree+=2*180
     
-    yaw=cp.deepcopy(azimuth)
+    #degree to radian
+    yaw_degree=cp.deepcopy(azimuth_degree)
+    yaw_radian=yaw_degree*np.pi/180
     
     #update
-    which_drone.Update(which_drone.position_NED,yaw*np.pi/180)
+    which_drone.Update(which_drone.position_NED,yaw_radian)
     
     #Plot the drone
     if ax is not None:
