@@ -92,9 +92,6 @@ def VariantVelocitySimulation(which_drone,waypoints,error_level=0.5,time_step=0.
         #yaw in start point
         start_yaw=Geom.Azimuth(start_point,destination_point)
         
-        #update position and plot
-#        which_drone.Update(destination_point,start_yaw)
-        
         #waypoint parameters
         this_waypoint_params=list(destination_point-start_point)+[start_yaw]
         
