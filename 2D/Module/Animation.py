@@ -20,6 +20,9 @@ import Error as Err
 import Geometry as Geom
 import Simulation as Sim
 
+from ACTION_LIB import WAYPOINT_FLIGHT
+from ACTION_LIB import ARM
+
 #title font
 title_font=fm.FontProperties(fname=r"C:\Windows\Fonts\GILI____.ttf",size=20)
  
@@ -57,9 +60,12 @@ def UpdateFrame(index,frame,which_drone,waypoints_3D,ax,error_level=0.5,time_ste
         #yaw in start point
         start_yaw=Geom.Azimuth(start_point,destination_point)
           
-        #update position and plot
-        which_drone.Update(destination_point,start_yaw)
-        which_drone.Plot(ax)
+        #waypoint parameters
+        this_waypoint_params=list(destination_point-start_point)+[start_yaw]
+        
+        #Waypoint flight
+        WAYPOINT_FLIGHT.WaypointFlight(which_drone,this_waypoint_params,1)
+        which_drone.Plot(ax,True,True)
           
         plt.axis(Sim.FlightField(waypoints_3D)*1.1)
         plt.title('Drone Flight Simulation 2D: Variant Velocity',fontproperties=title_font)
@@ -89,12 +95,17 @@ def VariantVelocityAnimation(which_drone,waypoints_3D,error_level=0.5,time_step=
         
     # Set up formatting for the movie files
     Writer = animation.writers['ffmpeg']
+    
+    #fps control the frequency (default:20)
     writer = Writer(fps=20, metadata=dict(artist='Me'), bitrate=2000)
     
     plt.ion()
     fig=plt.figure(figsize=(8,8))
     ax=fig.add_subplot(111)
         
+    #unlock the drone
+    ARM.Arm(which_drone)
+    
     # Add new element to list with everything that changes between frames
     frame, = ax.plot([],[])
     

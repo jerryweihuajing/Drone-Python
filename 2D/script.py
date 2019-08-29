@@ -21,13 +21,14 @@ B_circle_scatter=Cir.PointsAboveCircle([+r,+r],r,-3*np.pi/4,num_step,'counter-cl
 C_circle_scatter=Cir.PointsAboveCircle([+r,-r],r,-np.pi/4,num_step,'counter-clockwise')
 D_circle_scatter=Cir.PointsAboveCircle([-r,-r],r,+np.pi/4,num_step,'clockwise')
 
+'''add return to launch'''
 #combine them
 waypoints=Way.CombineWaypoints([A_circle_scatter,
                                 B_circle_scatter,
                                 C_circle_scatter,
-                                D_circle_scatter])
+                                D_circle_scatter,
+                                A_circle_scatter[:1]])
 
-'''add return to launch'''
 #3D format
 waypoints_3D=Geom.Coordinates2Dto3D(waypoints)
     
@@ -120,6 +121,6 @@ TAKEOFF.TakeOff(AMENG)
 #plt.pause(1)
 
 #flight simulation
-Sim.VariantVelocitySimulation(AMENG,waypoints_3D)
+#Sim.VariantVelocitySimulation(AMENG,waypoints_3D)
 
-#ani=Ani.VariantVelocityAnimation(AMENG,waypoints_3D,file_name='8-digit.mp4')
+ani=Ani.VariantVelocityAnimation(AMENG,waypoints_3D,file_name='butterfly.mp4')
